@@ -84,37 +84,34 @@ function Validation(){
 	return false;	
 }
 
-function signup(){
+function updateUser(){
 	var check = Validation();	
-	if(check){		
-		if(idCheck==1){			
-			idCheck--;	
+	if(check){
+		if(idCheck==1){
+			idCheck--;
 			$("#uiId").focus();
 		}
-		else if(pwdCheck==1){			
-			pwdCheck--;	
+		else if(pwdCheck==1){
+			pwdCheck--;
 			$("#uiPwd").focus();
 		}
-		else if(nickCheck==1){			
+		else if(nickCheck==1){
 			nickCheck--;	
 			$("#uiNickName").focus();
 		}
 		return;		
 	}
-	if(checkIdOk!=0){
-		var au = new AjaxUtil("/user/signup", param);
-		au.send(callback);
+
+	var au = new AjaxUtil("/user/update/submit", param);
+	au.send(callback);
 		
-		function callback(res){
-			alert(res.msg);
-			if(res.biz){
-				location.href="/login";
-			}
-		}		
-	}else{		
-		alert("아이디 중복체크를 해주세요.")
-		return;
+	function callback(res){
+		alert(res.msg);
+		if(res.biz){
+		location.href="/user/admin_user";
+		}
 	}
+
 }
 
 
@@ -191,14 +188,7 @@ function checkVal(id){
 							<div class="ui left icon input">
 								<i class="user icon"></i> <input type="text" id="uiId"
 									name="uiId" placeholder="ID"
-									<c:if test="${id!=null}">value="${id}" disabled</c:if>>
-
-								<div class="ui basic button right icon input"
-									style="width: 50px" id="checkyUp"
-									<c:if test="${id==null}"> onclick="idValidation()"</c:if>
-									onmouseover="chCursor()" onmouseout="reChCursor">
-									<i class="large check icon" id="checkyUpp"></i>
-								</div>
+									<c:if test="${uiId!=null}">value="${uiId}" disabled</c:if>>
 
 							</div>
 						</div>
@@ -207,7 +197,7 @@ function checkVal(id){
 							<div class="ui left icon input">
 								<i class="lock icon"></i> <input type="password" id="uiPwd"
 									name="uiPwd" placeholder="Password"
-									<c:if test="${email!=null}">value="P@ssw0rd" disabled</c:if>>
+									<c:if test="${uiPwd!=null}">value="P@ssw0rd" disabled</c:if>>
 
 							</div>
 						</div>
@@ -215,7 +205,8 @@ function checkVal(id){
 						<div class="field">
 							<div class="ui left icon input">
 								<i class="user circle icon"></i> <input type="text"
-									id="uiNickName" name="uiNickName" placeholder="Nickname">
+									id="uiNickName" name="uiNickName" placeholder="Nickname"
+									<c:if test="${uiNickName!=null}">value="${uiNickName}" disabled</c:if>>
 
 							</div>
 						</div>
@@ -224,25 +215,12 @@ function checkVal(id){
 							<div class="ui left icon input">
 								<i class="at icon"></i> <input type="text" id="uiEmail"
 									name="uiEmail" placeholder="Email"
-									<c:if test="${email!=null}">value="${email}" disabled</c:if>>
+									<c:if test="${uiEmail!=null}">value="${uiEmail}" disabled</c:if>>
 							</div>
 						</div>
 
-						<div class="field">
-                              <div class="ui radio checkbox">
-                                <input type="radio" name="uiType" value="1">
-                                <label>사용자</label>
-                              </div>
-                            </div>
-                            <div class="field">
-                              <div class="ui radio checkbox">
-                                <input type="radio" name="uiType" value="0">
-                                <label>관리자</label>
-                              </div>
-                            </div>
-
 						<div class="ui fluid large magenta submit button"
-							onclick="signup()">Sign-Up</div>
+							onclick="updateUser()">수정</div>
 					</div>
 
 				</form>

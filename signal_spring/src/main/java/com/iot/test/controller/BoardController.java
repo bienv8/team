@@ -54,7 +54,8 @@ public class BoardController {
 	@Autowired
 	BoardRecommandServiceImpl boardRecommandService;
 
-	ModelAndView goBoard(ModelAndView mav, int page, int block) {
+	ModelAndView goBoard(ModelAndView mav, int page, int block, HttpSession hs) {
+		UserInfoVO uiv = (UserInfoVO) hs.getAttribute("user");
 		int maxContent = boardService.selectBoardCount();
 		Paging p = new Paging(maxContent);
 		p.setCurrentPage(page);
@@ -62,11 +63,13 @@ public class BoardController {
 		List<BoardVO> boardList = boardService.boardList((page - 1) * 20);
 		mav.addObject("boardList", boardList);
 		mav.addObject("page", p);
+		mav.addObject("uiType", uiv.getUiType());
 		mav.setViewName("board/board");
 		return mav;
 	}
 
-	ModelAndView goBoard(ModelAndView mav) {
+	ModelAndView goBoard(ModelAndView mav, HttpSession hs) {
+		UserInfoVO uiv = (UserInfoVO) hs.getAttribute("user");
 		int page = 1;
 		int block = 1;
 		int maxContent = boardService.selectBoardCount();
@@ -76,14 +79,15 @@ public class BoardController {
 		List<BoardVO> boardList = boardService.boardList((page - 1) * 20);
 		mav.addObject("boardList", boardList);
 		mav.addObject("page", p);
+		mav.addObject("uiType", uiv.getUiType());
 		mav.setViewName("board/board");
 		return mav;
 	}
 
 	@RequestMapping
 	public ModelAndView boardListPage(@RequestParam("page") int page, @RequestParam("block") int block,
-			ModelAndView mav) {
-		return goBoard(mav, page, block);
+			ModelAndView mav,HttpSession hs) {
+		return goBoard(mav, page, block, hs);
 	}
 
 	@RequestMapping("/write")
@@ -106,7 +110,7 @@ public class BoardController {
 		// 이미지 내용 저장
 		imageService.insertImg(images, bNo);
 
-		return goBoard(mav);
+		return goBoard(mav, hs);
 	}
 
 	// 게시판 수정화면으로 이동
@@ -134,7 +138,7 @@ public class BoardController {
 		// 추가한 이미지를 삽입, 저장
 		imageService.insertImg(images, bNo);
 		boardService.updateBoard(bv);
-		return goBoard(mav);
+		return goBoard(mav, hs);
 	}
 
 	@RequestMapping(value = "/comment", method = RequestMethod.POST)

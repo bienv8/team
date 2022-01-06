@@ -11,9 +11,16 @@
 <%
 	String uri = request.getRequestURI();
 	UserInfoVO user = (UserInfoVO) session.getAttribute("user");
+	String userType = "none";
 	if (uri.indexOf("login") == -1 && uri.indexOf("signup") == -1 && user == null) {
 		response.sendRedirect("/login");
 	}
+	if(user != null){
+	    if(user.getUiType()==0){
+	        userType = "";
+	    }
+	}
+
 %>
 
 <style type="text/css">
@@ -205,6 +212,10 @@ function moveMyPost(){
 	location.href="/board/mypost?page=1&block=1";
 }
 
+function goAdminUser(){
+	location.href="/user/admin_user";
+}
+
 function doWithdrawal(){
        if(confirm("정말 탈퇴하시겠습니까?")){
            var ajax = new AjaxUtil("/user/withdrawal");
@@ -248,6 +259,12 @@ function doWithdrawal(){
 							</div>
 						</div>
 					</div>
+
+					<div id="withdrawal" class="ui inverted dropdown button"
+                                        		style="display:<%=userType%>;" onclick="goAdminUser()">
+                       <div class="text" id="adminUser">사용자 관리</div>
+                       </div>
+                    </div>
 
 					<div id="withdrawal" class="ui inverted dropdown button"
                     		style="display:${(Log=='login')?'none':''};" onclick="doWithdrawal()">

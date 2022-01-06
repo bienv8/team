@@ -9,8 +9,8 @@ public class UserInfoVO {
 	private String uiEmail;
 	private String uiRegdate;
 	private String iconName;
-	
-	
+	private int uiType;
+
 	public String getIconName() {
 		return iconName;
 	}
@@ -53,13 +53,24 @@ public class UserInfoVO {
 	public void setUiRegdate(String uiRegdate) {
 		this.uiRegdate = uiRegdate;
 	}
+	public int getUiType() {
+		return uiType;
+	}
+	public void setUiType(int uiType) {
+		this.uiType = uiType;
+	}
+
 	@Override
 	public String toString() {
-		return "UserInfoVO [uiNo=" + uiNo + ", uiId=" + uiId + ", uiPwd=" + uiPwd + ", uiNickName=" + uiNickName
-				+ ", uiEmail=" + uiEmail + ", uiRegdate=" + uiRegdate + ", iconName=" + iconName + "]";
+		return "UserInfoVO{" +
+				"uiNo=" + uiNo +
+				", uiId='" + uiId + '\'' +
+				", uiPwd='" + uiPwd + '\'' +
+				", uiNickName='" + uiNickName + '\'' +
+				", uiEmail='" + uiEmail + '\'' +
+				", uiRegdate='" + uiRegdate + '\'' +
+				", iconName='" + iconName + '\'' +
+				", uiType=" + uiType +
+				'}';
 	}
-	
-	
-	
-	
 }

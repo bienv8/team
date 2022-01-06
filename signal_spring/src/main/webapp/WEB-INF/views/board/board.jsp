@@ -91,6 +91,19 @@
 		$('#block').val(currentBlock);
 		setTimeout(function(){$('#pageForm').submit()},500);
 	}
+
+	function deleteBoard(bNo) {
+    		var isDelete = confirm("삭제 시 복구 되지 않습니다.");
+    		if (isDelete) {
+    			var param = {
+    				bNo : bNo
+    			};
+    			var ajax = new AjaxUtil("/board/delete", param);
+    			ajax.send(function(){
+    				location.href="/board?page=1&block=1";
+    			});
+    		}
+    	}
 </script>
 <body
 	onload="setPageFoot(${page.currentPage},${page.currentBlock},${page.maxBlock},${page.restPage})">
@@ -111,18 +124,19 @@
 					<th class="two wide">날짜</th>
 					<th class="one wide">조회</th>
 					<th class="one wide">추천</th>
+					<c:if test="${uiType==0}"> <th class="one wide"></th></c:if>
 				</tr>
 			</thead>
 			<tbody>
 				<c:forEach items="${boardList}" var="post">
-					<tr id="${post.bNo}" onclick="goPost(id,'<%=sessionId%>')"
-						style='cursor: pointer'>
-						<td class="positive">${post.bNo}</td>
-						<td class="left aligned">${post.bName}(${post.bCommentCount})</td>
-						<td class="warning">${post.uiNickName}</td>
+					<tr id="${post.bNo}">
+						<td class="positive" onclick="goPost('${post.bNo}','<%=sessionId%>')" style='cursor: pointer'>${post.bNo}</td>
+						<td class="left aligned" onclick="goPost('${post.bNo}','<%=sessionId%>')" style='cursor: pointer'>${post.bName}(${post.bCommentCount})</td>
+						<td class="warning" onclick="goPost('${post.bNo}','<%=sessionId%>')" style='cursor: pointer'>${post.uiNickName}</td>
 						<td>${post.bRegDate}</td>
 						<td>${post.bHit}</td>
 						<td>${post.bRecom}</td>
+					    <c:if test="${uiType==0}"><td style="cursor:pointer;" onclick="deleteBoard('${post.bNo}')">삭제</td></c:if>
 					</tr>
 				</c:forEach>
 			</tbody>

@@ -13,7 +13,7 @@
 <script>
 function accept(id){
 	var param = {uiId : id};
-	var au = new AjaxUtil("/friends/add", param);
+	var au = new ("/friends/add", param);
 	au.send(resultCallback);
 	function resultCallback(res){
 		alert(res.msg);
